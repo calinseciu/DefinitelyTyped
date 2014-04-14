@@ -51,7 +51,7 @@ declare module "mapnik" {
          * @param options
          * @param callback
          */
-        load(stylesheet: string, options: LoadOptions, callback: (err: Error, map: Map) => void): void;
+        load(stylesheet: string, options: MapLoadOptions, callback: (err: Error, map: Map) => void): void;
 
         /**
          * Load a stylesheet synchronously.
@@ -61,7 +61,7 @@ declare module "mapnik" {
          *
          * @param stylesheet Path to a mapnik xml stylesheet
          */
-        loadSync(stylesheet: string, options?: LoadOptions): void;
+        loadSync(stylesheet: string, options?: MapLoadOptions): void;
 
         /**
          * Load a stylesheet from a given string, synchrounously.
@@ -72,7 +72,7 @@ declare module "mapnik" {
          * @param stylesheet Mapnik xml stylesheet as a string
          * @param options
          */
-        fromStringSync(stylesheet: string, options?: LoadOptions): void;
+        fromStringSync(stylesheet: string, options?: MapLoadOptions): void;
 
         /**
          * Load a stylesheet from a given string, asynchrounously.
@@ -95,7 +95,7 @@ declare module "mapnik" {
          * @param options
          * @param callback
          */
-        fromString(stylesheet: string, options: LoadOptions, callback: (err: Error, map: Map) => void): void;
+        fromString(stylesheet: string, options: MapLoadOptions, callback: (err: Error, map: Map) => void): void;
 
         /**
          * Save the mapnik xml stylesheet.
@@ -125,19 +125,19 @@ declare module "mapnik" {
         /**
          * Render to a given renderable mapnik object, asynchronously.
          *
-         * @param renderable Can be an instance of: mapnik.Image, mapnik.Grid, mapnik.VectorTile
+         * @param surface Can be an instance of: mapnik.Image, mapnik.Grid, mapnik.VectorTile
          * @param callback
          */
-        render(renderable: any, callback: (err: Error, renderable: any) => void): void;
+        render(surface: any, callback: (err: Error, surface: any) => void): void;
 
         /**
          * Render to a given renderable mapnik object, asynchronously.
          *
-         * @param renderable Can be an instance of: mapnik.Image, mapnik.Grid, mapnik.VectorTile
+         * @param surface Can be an instance of: mapnik.Image, mapnik.Grid, mapnik.VectorTile
          * @param options
          * @param callback
          */
-        render(renderable: any, options: MapRenderOptions, callback: (err: Error, renderable: any) => void): void;
+        render(surface: any, options: MapRenderOptions, callback: (err: Error, surface: any) => void): void;
 
         /**
          * Render to an image, synchronously. The width and height are the ones of the map object.
@@ -145,7 +145,7 @@ declare module "mapnik" {
          * @param format Eg. 'png'
          * @param options
          */
-        renderSync(format: string, options?: RenderFileOptions) : void;
+        renderSync(format: string, options?: MapRenderFileOptions) : void;
 
         /**
          * Render to a given file path, asynchronously.
@@ -162,7 +162,7 @@ declare module "mapnik" {
          * @param options
          * @param callback
          */
-        renderFile(file: string, options: RenderFileOptions, callback: (err: Error) => void): void;
+        renderFile(file: string, options: MapRenderFileOptions, callback: (err: Error) => void): void;
 
         /**
          * Render to a given file path, synchronously.
@@ -170,7 +170,7 @@ declare module "mapnik" {
          * @param file
          * @param options
          */
-        renderFileSync(file: string, options?: RenderFileOptions): void;
+        renderFileSync(file: string, options?: MapRenderFileOptions): void;
 
         /**
          * Set the geographical extent of the map to the combined extents of all active layers.
@@ -245,7 +245,7 @@ declare module "mapnik" {
          * @param options
          * @param callback
          */
-        queryPoint(x: number, y: number, options: QueryPointOptions, callback: (err: Error, results: Layer[]) => void): void;
+        queryPoint(x: number, y: number, options: MapQueryPointOptions, callback: (err: Error, results: Layer[]) => void): void;
 
         /**
          * Query a Map Layer (by all layers) for features intersecting
@@ -288,7 +288,7 @@ declare module "mapnik" {
          * @param options
          * @param callback
          */
-        queryMapPoint(x: number, y: number, options: QueryPointOptions, callback: (err: Error, results: Layer[]) => void): void;
+        queryMapPoint(x: number, y: number, options: MapQueryPointOptions, callback: (err: Error, results: Layer[]) => void): void;
 
         // Layer access
 
@@ -391,7 +391,7 @@ declare module "mapnik" {
     }
 
     // Used in mapnik.Map
-    interface RenderFileOptions {
+    interface MapRenderFileOptions {
         /**
          * Default is 'png'
          */
@@ -408,7 +408,7 @@ declare module "mapnik" {
     }
 
     // Used in mapnik.Map
-    interface LoadOptions {
+    interface MapLoadOptions {
         /**
          * If true, mapnik will throw errors instead of only logging them. Default is false.
          */
@@ -420,7 +420,7 @@ declare module "mapnik" {
     }
 
     // Used in mapnik.Map
-    interface QueryPointOptions {
+    interface MapQueryPointOptions {
         /**
          * Either a layer name (string) or a layer index (number).
          */
@@ -463,7 +463,7 @@ declare module "mapnik" {
          * @param format Default is 'png'
          * @param options
          */
-        encodeSync(format?: string, options?: EncodeOptions): NodeBuffer;
+        encodeSync(format?: string, options?: ImageEncodeOptions): NodeBuffer;
 
         /**
          * Return a node Buffer in the 'png' format from the image, asynchronously.
@@ -488,7 +488,7 @@ declare module "mapnik" {
          * @param options
          * @param callback
          */
-        encode(format: string, options: EncodeOptions, callback: (err: Error, buffer: NodeBuffer) => void): void;
+        encode(format: string, options: ImageEncodeOptions, callback: (err: Error, buffer: NodeBuffer) => void): void;
 
         /**
          * Create an ImageView from the current image.
@@ -541,7 +541,7 @@ declare module "mapnik" {
          * @param options
          * @param callback
          */
-        composite(imageMask: Image, options: CompositeOptions, callback: (err: Error, imageOut: Image) => void): void;
+        composite(imageMask: Image, options: ImageCompositeOptions, callback: (err: Error, imageOut: Image) => void): void;
 
         /**
          * Premultiply the image, synchronously.
@@ -576,14 +576,14 @@ declare module "mapnik" {
         demultiply(callback: (err: Error, image: Image) => void): void;
 
         /**
-         * Clear the image.
+         * Clear the image, asynchronously.
          *
          * @param callback
          */
         clear(callback: (err: Error) => void): void;
 
         /**
-         * Clear the image.
+         * Clear the image, synchronously.
          */
         clearSync(): void;
 
@@ -628,13 +628,13 @@ declare module "mapnik" {
     }
 
     // Used in mapnik.Image
-    interface CompositeOptions {
+    interface ImageCompositeOptions {
         /**
          * Must be a `mapnik.compositeOp` value.
          *
          * If not set, defaults to `mapnik.compositeOp['src_over']`.
          */
-        comp_op?: any;
+        comp_op?: number;
         /**
          * Default is 1.0
          */
@@ -673,7 +673,7 @@ declare module "mapnik" {
          * @param format Default is 'png'
          * @param options
          */
-        encodeSync(format?: string, options?: EncodeOptions): NodeBuffer;
+        encodeSync(format?: string, options?: ImageEncodeOptions): NodeBuffer;
 
         /**
          * Return a node Buffer in the 'png' format from the image view, asynchronously.
@@ -698,7 +698,7 @@ declare module "mapnik" {
          * @param options
          * @param callback
          */
-        encode(format: string, options: EncodeOptions, callback: (err: Error, buffer: NodeBuffer) => void): void;
+        encode(format: string, options: ImageEncodeOptions, callback: (err: Error, buffer: NodeBuffer) => void): void;
 
         /**
          * Save the image view to a file.
@@ -750,17 +750,27 @@ declare module "mapnik" {
     }
 
     // Used in mapnik.Image and mapnik.ImageView
-    interface EncodeOptions {
+    interface ImageEncodeOptions {
         palette?: Palette;
     }
 
-    // todo
+    // todo: document mapnik.Grid
     export class Grid {
 
     }
 
     /**
      * Mapnik Vector Tile.
+     *
+     * Returns a new VectorTile object for a given `xyz` [tile uri](http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames).
+     * The assumed projection of the data is [Spherical Mercator](http://en.wikipedia.org/wiki/Mercator_projection).
+     * Learn more about tile addressing at [Maptiler.org](http://www.maptiler.org/google-maps-coordinates-tile-bounds-projection/).
+     *
+     * Params:
+     *
+     * * `z`: An integer zoom level.
+     * * `x`: An integer x coordinate.
+     * * `y`: An integer y coordinate.
      *
      * Usage:
      *
@@ -773,18 +783,190 @@ declare module "mapnik" {
          * Render to a given renderable mapnik object, asynchronously.
          *
          * @param map
-         * @param renderable Can be an instance of: mapnik.Image, mapnik.CairoSurface, mapnik.Grid
+         * @param surface Can be an instance of: mapnik.Image, mapnik.CairoSurface, mapnik.Grid
+         * @param callback
+         */
+        render(map: Map, surface: any, callback: (err: Error, surface: any) => void): void;
+
+        /**
+         * Render to a given renderable mapnik object, asynchronously.
+         *
+         * @param map
+         * @param surface Can be an instance of: mapnik.Image, mapnik.CairoSurface, mapnik.Grid
          * @param options
          * @param callback
          */
-        render(map: Map, renderable: any, options: VectorTileRenderOptions, callback: (err: Error, renderable: any) => void): void;
+        render(map: Map, surface: any, options: VectorTileRenderOptions, callback: (err: Error, surface: any) => void): void;
 
-        // todo: add more API
+        /**
+         * Set the given buffer as the tiledata, asynchronously.
+         *
+         * Does not parse the buffer into tiledata immediately,
+         * simply copies it into the buffer for lazy parsing later.
+         *
+         * The buffer data should be parsable by mapnik::vector::tile.ParseFromArray() proto.
+         *
+         * @param buffer
+         * @param callback
+         */
+        setData(buffer: NodeBuffer, callback: (err: Error) => void): void;
+
+        /**
+         * Set the given buffer as the tiledata, synchronously.
+         *
+         * Does not parse the buffer into tiledata immediately,
+         * simply copies it into the buffer for lazy parsing later.
+         *
+         * The buffer data should be parsable by mapnik::vector::tile.ParseFromArray() proto.
+         *
+         * @param buffer
+         */
+        setDataSync(buffer: NodeBuffer): void;
+
+        /**
+         * Get the protobuf-encoded Buffer from the vector tile object. This should then be passed through
+         * `zlib.deflate` to compress further before storing or sending over http.
+         * Remember to set `content-encoding:deflate` if you want an http client to know to automatically uncompress.
+         * Or use `zlib.inflate` to uncompress yourself if working serverside.
+         */
+        getData(): NodeBuffer;
+
+        /**
+         * Parse the buffer data into proto and set it as tiledata, asynchronously.
+         *
+         * If buffer was already parsed, no operation is done.
+         */
+        parse(callback: (err: Error) => void): void;
+
+        /**
+         * Parse the buffer data into proto and set it as tiledata, synchronously.
+         *
+         * If buffer was already parsed, no operation is done.
+         */
+        parseSync(): void;
+
+        /**
+         * Append new data.
+         *
+         * @param buffer
+         */
+        addData(buffer: NodeBuffer): void;
+
+        /**
+         * Vector tiles composition.
+         *
+         * After this is called, you should call `parse()` before rendering.
+         *
+         * Need more documentation...
+         *
+         * @param vectorTiles
+         * @param options
+         */
+        composite(vectorTiles: VectorTile[], options?: VectorTileCompositeOptions): void;
+
+        /**
+         * Return an array of Features that intersect
+         * the given {lon, lat} point, with an optional tolerance.
+         *
+         * @param lon
+         * @param lat
+         * @param options
+         */
+        query(lon: number, lat: number, options?: VectorTileQueryOptions): Feature[];
+
+        /**
+         * Return an array of layer names.
+         */
+        names(): string[];
+
+        /**
+         * Return all layers as JSON.
+         */
+        toJSON(): VectorTileLayerJSON[];
+
+        /**
+         * Return layer by index or name as GeoJSON.
+         *
+         * If '__all__' is passed, then all layers will
+         * be flattened and returned as one `VectorTileLayerGeoJSON`.
+         *
+         * @param layer Layer index, name or '__all__'
+         */
+        toGeoJSON(layer: any): VectorTileLayerGeoJSON;
+
+        /**
+         * Return all layers as GeoJSON.
+         *
+         * @param layer Must be '__array__'
+         */
+        toGeoJSON(layer: string): VectorTileLayerGeoJSON[];
+
+        // Common to mapnik.Image
+
+        /**
+         * Return the width of the vector tile.
+         */
+        width(): number;
+
+        /**
+         * Return the height of the vector tile.
+         */
+        height(): number;
+
+        painted(): boolean;
+
+        /**
+         * Clear the vector tile data, asynchronously.
+         *
+         * @param callback
+         */
+        clear(callback: (err: Error) => void): void;
+
+        /**
+         * Clear the vector tile data, synchronously.
+         */
+        clearSync(): void;
+
+        /**
+         * Same as `isSolidSync()`.
+         */
+        isSolid(): string;
+
+        /**
+         * @param callback
+         * @see `isSolidSync()`
+         */
+        isSolid(callback: (err: Error, solid: boolean, key: string) => void): void;
+
+        /**
+         * Return all layers that have solid extents, as string.
+         *
+         * Eg. 'layer1-layer2-layer3'
+         *
+         * If no layers available, will return boolean false.
+         *
+         * Needs more documentation...
+         */
+        isSolidSync(): string;
     }
 
     // Used in mapnik.VectorTile
     interface VectorTileRenderOptions {
-        // todo change this
+        /**
+         * If one of {z, x, y} is set, all need to be set.
+         * Default is the VectorTile z
+         */
+        z?: number;
+        /**
+         * If one of {z, x, y} is set, all need to be set.
+         * Default is the VectorTile x
+         */
+        x?: number;
+        /**
+         * If one of {z, x, y} is set, all need to be set.
+         * Default is the VectorTile y
+         */
+        y?: number;
         /**
          * Default is 0
          */
@@ -797,14 +979,115 @@ declare module "mapnik" {
          * Default is 0.0
          */
         scale_denominator?: number;
+    }
+
+    // Used in mapnik.VectorTile
+    interface VectorTileCompositeOptions {
+        /**
+         * Default to 16
+         * @type unsigned int
+         */
+        path_multiplier?: number;
+        /**
+         * Tolerance, in meters. Default is 1
+         * @type unsigned int
+         */
+        tolerance?: number;
+        /**
+         * Default is 256
+         * @type int
+         */
+        buffer_size?: number;
+        /**
+         * Default is 1.0
+         * @type float
+         */
+        scale?: number;
+        /**
+         * Default is 0.0
+         * @type float
+         */
+        scale_denominator?: number;
         /**
          * Default is 0
+         * @type unsigned int
          */
         offset_x?: number;
         /**
          * Default is 0
+         * @type unsigned int
          */
         offset_y?: number;
+    }
+
+    // Used in mapnik.VectorTile
+    interface VectorTileQueryOptions {
+        /**
+         * Tolerance, in meters. Default is 0.0
+         */
+        tolerance?: number;
+        /**
+         * Layer name. If not given, will check all layers.
+         */
+        layer?: string;
+    }
+
+    // Used in mapnik.VectorTile
+    interface VectorTileLayerJSON {
+        name: string;
+        /**
+         * Not sure why this is just a number, instead of number[]
+         */
+        extend: number;
+        version: number;
+        features: VectorTileFeatureJSON[];
+    }
+
+    // Used in mapnik.VectorTile
+    interface VectorTileFeatureJSON {
+        id: number;
+        type: number;
+        geometry: number[];
+        /**
+         * Tags of this feature.
+         *
+         * Eg. `{_id: 7, _text: 'Brazil', bounds: '-74.018,-33.742,-28.876,5.267', lat: -14.237.., lon: -49.727.., name: 'Brazil', ...}`
+         */
+        properties: Object;
+    }
+
+    // Used in mapnik.VectorTile
+    interface VectorTileLayerGeoJSON {
+        name: string;
+        /**
+         * Eg. 'FeatureCollection'
+         */
+        type: string;
+        features: VectorTileFeatureGeoJSON[];
+    }
+
+    // Used in mapnik.VectorTile
+    interface VectorTileFeatureGeoJSON {
+        /**
+         * Eg. 'Feature'
+         */
+        type: string;
+        geometry: VectorTileGeometryGeoJSON;
+        /**
+         * Tags of this feature.
+         *
+         * Eg. `{_id: 7, _text: 'Brazil', bounds: '-74.018,-33.742,-28.876,5.267', lat: -14.237.., lon: -49.727.., name: 'Brazil', ...}`
+         */
+        properties: Object;
+    }
+
+    // Used in mapnik.VectorTile
+    interface VectorTileGeometryGeoJSON {
+        /**
+         * Eg. 'Polygon'
+         */
+        type: string;
+        coordinates: number[][];
     }
 
     /**
@@ -842,6 +1125,8 @@ declare module "mapnik" {
         name: string;
         /**
          * Layer projection
+         *
+         * @see mapnik.Map.srs
          */
         srs: string;
         /**
@@ -883,7 +1168,7 @@ declare module "mapnik" {
         constructor(options: DatasourceShapeOptions);
         constructor(options: DatasourcePostGISOptions);
         constructor(options: DatasourceGeoJSONOptions);
-        // todo: add more datasources
+        // todo: add more datasource input plugins
 
         /**
          * Return the datasource options that were passed at initialization.
@@ -935,6 +1220,12 @@ declare module "mapnik" {
 
     // Used in mapnik.Datasource
     interface DatasourcePostGISOptions extends DatasourceOptions {
+        /**
+         * Table name or subquery.
+         *
+         * Subquery must be provided in brackets and have an alias, as:
+         * `(SELECT * FROM planet_osm_point) AS points`
+         */
         table: string;
         /**
          * If not specified, localhost is assumed ?
@@ -1044,6 +1335,7 @@ declare module "mapnik" {
         simplify_geometries?: boolean;
     }
 
+    // Used in mapnik.Datasource
     interface DatasourceGeoJSONOptions extends DatasourceOptions {
         /**
          * Path to a geojson file, eg. 'world.json'
@@ -1059,12 +1351,73 @@ declare module "mapnik" {
         base?: string;
     }
 
-    // Used in mapnik.Datasource
+    // Used in mapnik.Datasource (meant to be extended)
     interface DatasourceOptions {
         /**
          * Possible values: 'shape', 'postgis', 'csv', 'osm', 'sqlite', 'geojson', 'ogr', 'gdal'.
          */
         type: string;
+    }
+
+    /**
+     * A memory datasource.
+     *
+     * Usage:
+     *
+     *     var ds = new mapnik.MemoryDatasource({extent: '-180,-60,180,60'});
+     */
+    export class MemoryDatasource {
+        constructor(options: MemoryDatasourceOptions);
+
+        /**
+         * Return the datasource options that were passed at initialization.
+         */
+        parameters(): Object;
+
+        /**
+         * Return the datasource properties, as an Object.
+         *
+         * @see mapnik.Datasource.describe()
+         */
+        describe(): Object;
+
+        /**
+         * Return all Features as a Featureset.
+         */
+        featureset(): Featureset;
+
+        /**
+         * Add a feature.
+         *
+         * Usage:
+         *
+         *     ds.add({x: 0, y: 0});
+         *     ds.add({x: 0, y: 0, properties: {feat_id:1,null_val:null,name:"name"}});
+         *
+         * @param options
+         */
+        add(options: MemoryDatasourceAddOptions): void;
+    }
+
+    // Used in mapnik.MemoryDatasource
+    interface MemoryDatasourceOptions {
+        /**
+         * As '-180,-60,180,60'
+         */
+        extent?: string;
+        /**
+         * Eg. 'shape'
+         */
+        type?: string;
+        file?: string;
+        // maybe there are more options...
+    }
+
+    // Used in mapnik.MemoryDatasource
+    interface MemoryDatasourceAddOptions {
+        x: number;
+        y: number;
+        properties?: Object;
     }
 
     /**
@@ -1288,10 +1641,42 @@ declare module "mapnik" {
 
     // Module level properties
 
-    /**
-     * Possible keys: clear, src, dst, src_over, dst_over, src_in, dst_in, src_out, dst_out, src_atop, dst_atop, xor, plus, minus, multiply, screen, overlay, darken, lighten, color_dodge, color_burn, hard_light, soft_light, difference, exclusion, contrast, invert, grain_merge, grain_extract, hue, saturation, color, value
-     */
-    var compositeOp: Object;
+    interface CompositeOp {
+        clear?: number;
+        src?: number;
+        dst?: number;
+        src_over?: number;
+        dst_over?: number;
+        src_in?: number;
+        dst_in?: number;
+        src_out?: number;
+        dst_out?: number;
+        src_atop?: number;
+        dst_atop?: number;
+        xor?: number;
+        plus?: number;
+        minus?: number;
+        multiply?: number;
+        screen?: number;
+        overlay?: number;
+        darken?: number;
+        lighten?: number;
+        color_dodge?: number;
+        color_burn?: number;
+        hard_light?: number;
+        soft_light?: number;
+        difference?: number;
+        exclusion?: number;
+        contrast?: number;
+        invert?: number;
+        grain_merge?: number;
+        grain_extract?: number;
+        hue?: number;
+        saturation?: number;
+        color?: number;
+        value?: number;
+    }
+    var compositeOp: CompositeOp;
 
     var settings: Settings;
 
